@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: UiKitView(
           viewType: "plugin.bughub.dev/amap_view",
           creationParams: {
-            "apiKey": "0f04b79882863d56993e4cdeaecfaead",
+            "apiKey": "此处填入apiKey",
           },
           creationParamsCodec: StandardMessageCodec(),
           onPlatformViewCreated: (_viewId) {
