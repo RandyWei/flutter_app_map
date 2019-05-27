@@ -1,6 +1,6 @@
 # flutter_app_map
 
-A new Flutter application.
+基于高德地图封装的Flutter版本
 
 ## Getting Started
 
