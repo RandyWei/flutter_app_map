@@ -18,6 +18,7 @@
     NSDictionary* _annotationViewStyle;
     NSDictionary* _polylineStyle;
     NSDictionary* _circleStyle;
+    AMapSearchAPI* _search;
     
 }
 
@@ -104,9 +105,9 @@
     }else if ([@"setMACircleStyle" isEqualToString:call.method]){//设置圆圈样式
         _circleStyle = args;
     }else if ([@"search" isEqualToString:call.method]){//搜索
-        AMapSearchAPI* search = [[AMapSearchAPI alloc]init];
-        search.delegate = self;
-        NSLog(@"args:%@",args);
+        _search = [[AMapSearchAPI alloc]init];
+        _search.delegate = self;
+        
         AMapPOIKeywordsSearchRequest* searchRequest = [[AMapPOIKeywordsSearchRequest alloc]init];
         searchRequest.keywords = args[@"keywords"];
         searchRequest.city = args[@"city"];
@@ -116,8 +117,8 @@
         searchRequest.cityLimit  = [args[@"cityLimit"] boolValue];
         searchRequest.requireSubPOIs  = [args[@"requireSubPOIs"] boolValue];
         
-        [search AMapPOIKeywordsSearch:searchRequest];
-        NSLog(@"发送搜索请求");
+        [_search AMapPOIKeywordsSearch:searchRequest];
+        
     }else{
         result(FlutterMethodNotImplemented);
     }
@@ -208,16 +209,16 @@
 
 #pragma AMapSearchDelegate
 - (void)onPOISearchDone:(AMapPOISearchBaseRequest *)request response:(AMapPOISearchResponse *)response{
-    NSLog(@"11111111111111111111111");
+    
     //搜索结果
-    NSLog(@"response:%@",response);
+    
     
     if (response.pois.count==0) {
         return;
     }
     
     self->_eventSink(@{@"event":@"search",
-                       @"raw":[self onereturnToDictionaryWithModel:response],
+                       @"raw":[response formattedDescription],
                        });
     
 }
